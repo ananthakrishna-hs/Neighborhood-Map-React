@@ -1,3 +1,28 @@
 .list-items {
     list-style-image: url('https://cdn4.iconfinder.com/data/icons/spirit20/marker.png');
 }
+
+.jumbotron {
+    text-align: center;
+}
+
+.modal-label-left {
+    float: left;
+}
+
+.modal-label-right {
+    float: right;
+}
+
+.modal-footer {
+    text-align: justify;
+}
+
+.filter-text {
+    margin: 10px 0;
+}
+
+.filter-text[type=text] {
+    font-style: italic;
+}
+

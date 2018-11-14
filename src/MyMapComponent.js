@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-
-import { withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow } from "react-google-maps"
+import Markers from './Markers'
+import { withScriptjs, withGoogleMap, GoogleMap } from "react-google-maps"
 
 /*const MyMapComponent = withScriptjs(withGoogleMap((props) =>
   <GoogleMap
@@ -55,6 +55,14 @@ class MyMapComponent extends Component {
     console.log(lat+"*"+lng);
   }
     render() {
+      let venues = this.props.markers_loc.map(venue => {
+        if(venue.id === this.props.hover)
+          venue.animate=window.google.maps.Animation.BOUNCE;
+        else
+          venue.animate=window.google.maps.Animation.DROP;
+        return venue;
+      });
+
         return (
           <GoogleMap 
           defaultZoom={15} 
@@ -64,8 +72,12 @@ class MyMapComponent extends Component {
           //onTilesLoaded={(e) => this.fit()}
           >
             {
-              this.props.markers_loc.map(venue => (
-                <Marker key={venue.id} position={{lat: venue.location.lat, lng: venue.location.lng}} />
+              venues.map(venue => (
+                <Markers 
+                key={venue.id} 
+                venueObj={venue} 
+                triggerClick={this.props.triggerClick}
+                />
               ))
             }
           </GoogleMap>

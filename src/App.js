@@ -1,30 +1,21 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import MyMapComponent from './MyMapComponent';
-import escapeRegExp from 'escape-string-regexp'
-import sortBy from 'sort-by'
+import escapeRegExp from 'escape-string-regexp';
+import sortBy from 'sort-by';
+import { Grid, Row, Col, Well, Jumbotron, Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter, Label, 
+  Panel, ButtonToolbar, Button, Navbar } from 'react-bootstrap';
 import './App.css';
-
-/*add this to your html -> <script src="https://storage.googleapis.com/code-snippets/rapidapi.min.js"></script> */
-/*var rapid = new RapidAPI("zomato_5be69e9de4b02e44154002a3", "a0f185ef-ce63-4f5d-8bca-e34a007ff9d9");
-
-rapid.call('Zomato', 'getLocationDetailsByCoordinates', { 
-	'coordinates': '51.479392346072686, -0.07777785508063184',
-	'apiKey': '11d486abefb1e5af48fc360ba4726227'
-
-}).on('success', function (payload) {
-	 /*YOUR CODE GOES HERE*/ 
-//}).on('error', function (payload) {
-	 /*YOUR CODE GOES HERE*/ 
-//});*/
-
-
-
 
 class App extends Component {
   state = {
     center: {lat: 12.931349, lng: 77.565320},
     venues: [],
-    query: ''
+    query: '',
+    modalShown: false,
+    modalVenue: {},
+    modalDetail: {},
+    hover: ''
   }
   
   componentDidMount() {
@@ -35,7 +26,10 @@ class App extends Component {
   fetchFunc = (center) => {
     fetch(`https://api.foursquare.com/v2/venues/search?ll=${center.lat},${center.lng}&client_id=LHKFCLEU3JQ4UVBH4OQZC4GBIKGBB4ADLP4C4W0TWEO4XUL2&client_secret=JO20NQCPDMURMQFJ0BCUVR5OGMY0NKPJCZHPIYDMZOIGKPHU&v=20181113`)
     .then(res => res.json()).then(function(response) {
-      this.setState({venues: response.response.venues.slice(0, 10)});
+      if(response.meta.code === 200)
+        this.setState({venues: response.response.venues.slice(0, 10)});
+      else
+        alert(`API call couln't be completed:- \nError: ${response.meta.code}\n${response.meta.errorDetail}`);
     }.bind(this));
   }
 
@@ -44,13 +38,59 @@ class App extends Component {
     this.setState({center: obj});
     this.fetchFunc(obj);
   }
-  /*componentDidMount() {
-    console.log("hi")
-    this.setState({latlng: this.state.newCentre});
-  }*/
+  
   querying = (value) => {
     this.setState({query: value.trim()});
   }
+
+  closeModal = () => {
+    this.setState({modalShown: false});
+  }
+
+  toggleModal = (venueId) => {
+    if(this.state.modalShown) 
+      this.setState({
+        modalShown: false,
+      });
+    else {
+      fetch(`https://api.foursquare.com/v2/venues/53c3f971498e4244b476f198?client_id=LHKFCLEU3JQ4UVBH4OQZC4GBIKGBB4ADLP4C4W0TWEO4XUL2&client_secret=JO20NQCPDMURMQFJ0BCUVR5OGMY0NKPJCZHPIYDMZOIGKPHU&v=20181114`)
+      .then(res => res.json()).then(function(response) {
+        if(response.meta.code === 200)
+          this.setState({
+            modalShown: true,
+            modalVenue: venueId,
+            modalDetail: response.response
+          });
+        else
+          alert(`API call couln't be completed:- \nError: ${response.meta.code}\n${response.meta.errorDetail}`);
+      }.bind(this));
+    }
+  }
+
+  closeFocus = (event) => {
+    if(event.keyCode === 9)
+      if(!event.shiftKey) {
+        event.preventDefault();
+        ReactDOM.findDOMNode(this.modalTitle).focus();
+      }  
+  }
+
+  titleFocus = (event) => {
+    if(event.keyCode === 9)
+      if(event.shiftKey) {
+        event.preventDefault();
+        ReactDOM.findDOMNode(this.closeButton).focus();
+      }
+  }
+
+  hoverStart = (venueId) => {
+    this.setState({hover: venueId});
+  }
+
+  hoverStop = () => {
+    this.setState({hover: ''});
+  }
+
   render() {
     let queriedVenues;
     if(this.state.query) {
@@ -63,33 +103,120 @@ class App extends Component {
     queriedVenues.sort(sortBy('location.distance'));
     
     return (
-      <main className="conatiner">
-        <div className="row">
-          <div id="filter-container" className="col-sm-4 card bg-info">
-            <div className="card-body">
-              <input type="text" className="filter-text" placeholder="Filter Locations" onChange={e => this.querying(e.target.value)} />
-              <ul className="list-items">
-                {
-                  queriedVenues.map(element => (
-                    <li key={element.id} className="list-item">{element.name}</li>
-                  ))
-                }
-              </ul>
-            </div>
-          </div>
-          <div id="map-container" className="col-sm-8">
-            <MyMapComponent
-            markers_loc={queriedVenues}
-            googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDT23otK1Zca1ko0AT1Yu1ntojCMHTVzfY"
-            loadingElement={<div style={{ height: `100%` }} />}
-            containerElement={<div style={{ height: `400px` }} />}
-            mapElement={<div style={{ height: `100%` }} />}
-            center={this.state.center}
-            triggerUpdate={this.updateMarkers}
-            />
-          </div>
-        </div>
-      </main>
+      <div>
+        {this.state.modalDetail.venue && 
+        (
+          <Modal 
+          show={this.state.modalShown}
+          onHide={this.closeModal}
+          autoFocus={true}
+          aria-label="Modal Window"
+          onEnter={this.hoverStart(this.state.modalDetail.venue.id)}
+          onExit={this.hoverStop()}
+          >
+            <ModalHeader>
+              <ModalTitle 
+              tabIndex="0" 
+              ref={(title) => { this.modalTitle = title; }}
+              onKeyDown={e => this.titleFocus(e)}
+              >
+                {this.state.modalDetail.venue.name}
+              </ModalTitle>
+            </ModalHeader>
+            <ModalBody tabIndex="0" aria-label="Venue Details">
+              <div tabIndex="0">Categories:</div>
+              {this.state.modalDetail.venue.categories.length && (
+                <Panel tabIndex="0">{this.state.modalDetail.venue.categories.map(category => category.name)}
+                </Panel>
+              )}
+              <Label bsStyle="default" className="modal-label-left" tabIndex="0">Location: {this.state.modalDetail.venue.location.country}</Label>
+              <Label bsStyle="info" className="modal-label-right" tabIndex="0">Timezone: {this.state.modalDetail.venue.timeZone}</Label>
+            </ModalBody>
+            <ModalFooter>
+              <div tabIndex="0" aria-label="Data attribution">
+                <p tabIndex="0">Data by FOURSQUARE API</p>
+                <Button 
+                bsStyle="success" 
+                href={this.state.modalDetail.venue.shortUrl} 
+                target="_blank"
+                className="modal-label-left"
+                >
+                  FOURSQUARE link of the Venue
+                </Button>
+              </div>
+              <Button 
+              bsStyle="danger" 
+              onClick={this.closeModal} 
+              ref={(close) => { this.closeButton = close; }}
+              tabIndex="0"
+              onKeyDown={e => this.closeFocus(e)}
+              className="modal-label-right"
+              aria-label="Modal Close"
+              >
+                Close
+              </Button>
+              
+            </ModalFooter>
+          </Modal>
+        )
+        }
+        <header tabIndex="0">
+          <Jumbotron>
+            <h1 tabIndex="0">
+              Sameepa
+            </h1>
+            <p tabIndex="0">
+              One-stop destination to find nearby places.
+            </p>
+          </Jumbotron>
+        </header>
+        <main>
+          <Grid>
+            <Row className="main-container">
+              <Col sm={4} className="list-container" tabIndex="0" aria-label="Filter list">
+                <Navbar>
+                  <Navbar.Header>
+                    <Navbar.Toggle />
+                  </Navbar.Header>
+                  <Navbar.Collapse>
+                    <input type="text" className="filter-text" placeholder="Filter Locations" onChange={e => this.querying(e.target.value)} />
+                    <ul className="list-items">
+                      {
+                        queriedVenues.map(element => (
+                          <li 
+                          key={element.id} 
+                          className="list-item"
+                          onClick={event => this.toggleModal(element.id)}
+                          onMouseOver={event => this.hoverStart(element.id)}
+                          onMouseOut={event => this.hoverStop()}
+                          tabIndex="0"
+                          role="button"
+                          >
+                            {element.name}
+                          </li>
+                        ))
+                      }
+                    </ul>
+                  </Navbar.Collapse>
+                </Navbar>
+              </Col>
+              <Col sm={8} className="map-container" tabIndex="0" aria-label="Map application">
+                <MyMapComponent
+                markers_loc={queriedVenues}
+                googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDT23otK1Zca1ko0AT1Yu1ntojCMHTVzfY"
+                loadingElement={<div style={{ height: `100%` }} />}
+                containerElement={<div style={{ height: `400px` }} />}
+                mapElement={<div style={{ height: `100%` }} />}
+                center={this.state.center}
+                triggerUpdate={this.updateMarkers}
+                triggerClick={this.toggleModal}
+                hover={this.state.hover}
+                />
+              </Col>
+            </Row>
+          </Grid>
+        </main>
+      </div>
     )
   }
 }
