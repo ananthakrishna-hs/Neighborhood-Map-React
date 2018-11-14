@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 
 class MyMapComponent extends Component {
-  
+  //TODO: Deliver the component as SFC if possible
   render() {
     //Get the venue which is hovered and set its animation to BOUNCE
     let venues = this.props.markers_loc.map(venue => {
