@@ -1,44 +1,69 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Neighborhood Map React - Sameepa
 
-## Available Scripts
+> Uses ReactJS library for users to get top nearby venues of a location.
 
-In the project directory, you can run:
+## Overview
 
-### `npm start`
+This project makes use of ReactJS v16, Google Maps API and FOURSQUARE API to get venues and locations.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Users can perform dynamic filtering with respect to venue's name to get venues as well as its corresponding map markers.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+Features of the app: 
+- Responsive.
+- Ease of use.
+- Accessible
+- Dynamic filtering.
+- Offline support(subject to CRA-PWA specifications learn more in: [Documentation](http://bit.ly/CRA-PWA))
 
-### `npm test`
+## Technologies used
+- HTML5
+- CSS3
+- JavaScript
+- ReactJS and some helper npm libraries:
+    - react-dom
+    - react-google-maps
+    - react-bootstrap
+    - escape-string-regexp
+    - sort-by
+-
+## Setup
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Requirements
+- node greater than v6
+- npm greater than v5
+- ReactJS v16
 
-### `npm run build`
+### Installation/Development
+- Download/clone the repository.
+- Download the node package manager as per requirements and run `npm install` in terminal.
+- Install the react-app using command `npm install create-react-app`
+- Install the dependencies:
+    - `npm install --save <libraries>`
+- In terminal change directory to the downloaded folder and run `npm start`. The web-app will run at the url `localhost:3000`.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## About Google Maps API and react-google-maps
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Google Maps API is a library for developers/organisations to use Google Maps. Its API key can be obtained from its [developers website](https://cloud.google.com/maps-platform/).
+'react-google-maps' is just a wrapper to most of the google maps library functionalities. All of the wrappers are through React components and props. Refer the [documentation](https://tomchentw.github.io/react-google-maps/).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## About react-bootstrap
 
-### `npm run eject`
+'react-bootstrap' is a wrapper library for most of the functionalities of the CSS framework Bootstrap 3. All the supported functionalities are through React components and props.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## About FOURSQUARE API
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This API library gets nearby venues to a particular location as well as its various details.
+Two of its APIs are used in this web-app: 
+- venues/search: This responds with a JSON of 30 venues nearby a particular location provided as parameters.
+- venues/details: This responds with JSON of details of a venue of a particular venueID provided as parameters.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Both APIs require authentication through their [developer platform](https://developer.foursquare.com/).
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+##About escape-string-regexp and sort-by
 
-## Learn More
+These libraries are combined with JavaScript methods in order to facilitate matching and sorting.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+> This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+

@@ -4,11 +4,12 @@ import MyMapComponent from './MyMapComponent';
 import escapeRegExp from 'escape-string-regexp';
 import sortBy from 'sort-by';
 import { Grid, Row, Col, Well, Jumbotron, Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter, Label, 
-  Panel, ButtonToolbar, Button, Navbar } from 'react-bootstrap';
+  Panel, Button, Navbar } from 'react-bootstrap';
 import './App.css';
 
 class App extends Component {
   state = {
+    //Stores a default center and empty values to be fetched later
     center: {lat: 12.931349, lng: 77.565320},
     venues: [],
     query: '',
@@ -20,9 +21,9 @@ class App extends Component {
   
   componentDidMount() {
     this.fetchFunc(this.state.center);
-    
   }
 
+  //Re-usable function to get nearby venues at start as well as at center change
   fetchFunc = (center) => {
     fetch(`https://api.foursquare.com/v2/venues/search?ll=${center.lat},${center.lng}&client_id=LHKFCLEU3JQ4UVBH4OQZC4GBIKGBB4ADLP4C4W0TWEO4XUL2&client_secret=JO20NQCPDMURMQFJ0BCUVR5OGMY0NKPJCZHPIYDMZOIGKPHU&v=20181113`)
     .then(res => res.json()).then(function(response) {
@@ -47,6 +48,7 @@ class App extends Component {
     this.setState({modalShown: false});
   }
 
+  //Get details of clicked venue from list/marker 
   toggleModal = (venueId) => {
     if(this.state.modalShown) 
       this.setState({
@@ -67,6 +69,7 @@ class App extends Component {
     }
   }
 
+  //closeFocus and titleFocus are functions to trap focus inside the modal 
   closeFocus = (event) => {
     if(event.keyCode === 9)
       if(!event.shiftKey) {
@@ -83,6 +86,7 @@ class App extends Component {
       }
   }
 
+  //hoverStart and hoverStop are functions to make hovered list item's marker animate 
   hoverStart = (venueId) => {
     this.setState({hover: venueId});
   }
@@ -92,6 +96,7 @@ class App extends Component {
   }
 
   render() {
+    //Display the query-matched contents only
     let queriedVenues;
     if(this.state.query) {
       const matchedExp = new RegExp(escapeRegExp(this.state.query), 'i');
