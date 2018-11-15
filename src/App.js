@@ -205,7 +205,8 @@ class App extends Component {
                     <Navbar.Toggle />
                   </Navbar.Header>
                   <Navbar.Collapse>
-                    <input type="text" className="filter-text" placeholder="Filter Locations" onChange={e => this.querying(e.target.value)} />
+                    <label for="search">Filter Locations:</label>
+                    <input type="text" id="search" className="filter-text" onChange={e => this.querying(e.target.value)} />
                     <ul className="list-items">
                       {
                         queriedVenues.map(element => (
