@@ -16,7 +16,8 @@ class App extends Component {
     modalShown: false,
     modalVenue: {},
     modalDetail: {},
-    hover: ''
+    hover: '',
+    errorComponent: false
   }
   
   componentDidMount() {
@@ -30,7 +31,9 @@ class App extends Component {
       if(response.meta.code === 200)
         this.setState({venues: response.response.venues.slice(0, 10)});
       else
-        alert(`API call couln't be completed:- \nError: ${response.meta.code}\n${response.meta.errorDetail}`);
+        this.setState({errorComponent: true});
+    }.bind(this)).catch(function(err) {
+      this.setState({errorComponent: true});
     }.bind(this));
   }
 
@@ -64,7 +67,9 @@ class App extends Component {
             modalDetail: response.response
           });
         else
-          alert(`API call couln't be completed:- \nError: ${response.meta.code}\n${response.meta.errorDetail}`);
+          this.setState({errorComponent: true});
+      }.bind(this)).catch(function(err) {
+        this.setState({errorComponent: true});
       }.bind(this));
     }
   }
@@ -93,6 +98,10 @@ class App extends Component {
 
   hoverStop = () => {
     this.setState({hover: ''});
+  }
+
+  componentDidCatch(error, info) {
+    this.setState({errorComponent: true});
   }
 
   render() {
@@ -178,6 +187,13 @@ class App extends Component {
             <p tabIndex="0">
               One-stop destination to find nearby places.
             </p>
+            {this.state.errorComponent && (
+              <h3 tabIndex="0" aria-live="assertive">
+                <Label bsStyle="danger">
+                  Some or no content could be loaded.<br /> Please try again later
+                </Label>
+              </h3>
+            )}
           </Jumbotron>
         </header>
         <main>
