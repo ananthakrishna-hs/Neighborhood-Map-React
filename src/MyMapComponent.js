@@ -22,8 +22,9 @@ class MyMapComponent extends Component {
       {
         venues.map(venue => (
           <Marker
+          key={venue.id}
           position={{lat: venue.location.lat, lng: venue.location.lng}}
-          onClick={event => this.props.triggerClick(this.props.venueObj.id)}
+          onClick={event => this.props.triggerClick(venue.id)}
           animation={venue.animate}
           />
         ))

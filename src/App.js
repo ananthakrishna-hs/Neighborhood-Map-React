@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import MyMapComponent from './MyMapComponent';
 import escapeRegExp from 'escape-string-regexp';
 import sortBy from 'sort-by';
-import { Grid, Row, Col, Well, Jumbotron, Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter, Label, 
+import { Grid, Row, Col, Jumbotron, Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter, Label, 
   Panel, Button, Navbar } from 'react-bootstrap';
 import './App.css';
 
@@ -25,7 +25,7 @@ class App extends Component {
 
   //Re-usable function to get nearby venues at start as well as at center change
   fetchFunc = (center) => {
-    fetch(`https://api.foursquare.com/v2/venues/search?ll=${center.lat},${center.lng}&client_id=LHKFCLEU3JQ4UVBH4OQZC4GBIKGBB4ADLP4C4W0TWEO4XUL2&client_secret=JO20NQCPDMURMQFJ0BCUVR5OGMY0NKPJCZHPIYDMZOIGKPHU&v=20181113`)
+    fetch(`https://api.foursquare.com/v2/venues/search?ll=${center.lat},${center.lng}&client_id=LHKFCLEU3JQ4UVBH4OQZC4GBIKGBB4ADLP4C4W0TWEO4XUL2&client_secret=RK4Q5OSBB3BXPOYY2Z2BEBKV3VNA1D5BZRYXV1YPNRPSZ0MU&v=20181115`)
     .then(res => res.json()).then(function(response) {
       if(response.meta.code === 200)
         this.setState({venues: response.response.venues.slice(0, 10)});
@@ -55,7 +55,7 @@ class App extends Component {
         modalShown: false,
       });
     else {
-      fetch(`https://api.foursquare.com/v2/venues/53c3f971498e4244b476f198?client_id=LHKFCLEU3JQ4UVBH4OQZC4GBIKGBB4ADLP4C4W0TWEO4XUL2&client_secret=JO20NQCPDMURMQFJ0BCUVR5OGMY0NKPJCZHPIYDMZOIGKPHU&v=20181114`)
+      fetch(`https://api.foursquare.com/v2/venues/${venueId}?client_id=LHKFCLEU3JQ4UVBH4OQZC4GBIKGBB4ADLP4C4W0TWEO4XUL2&client_secret=RK4Q5OSBB3BXPOYY2Z2BEBKV3VNA1D5BZRYXV1YPNRPSZ0MU&v=20181115`)
       .then(res => res.json()).then(function(response) {
         if(response.meta.code === 200)
           this.setState({
@@ -116,8 +116,8 @@ class App extends Component {
           onHide={this.closeModal}
           autoFocus={true}
           aria-label="Modal Window"
-          onEnter={this.hoverStart(this.state.modalDetail.venue.id)}
-          onExit={this.hoverStop()}
+          onEnter={event => this.hoverStart(this.state.modalDetail.venue.id)}
+          onExit={event => this.hoverStop()}
           >
             <ModalHeader>
               <ModalTitle 
@@ -131,9 +131,14 @@ class App extends Component {
             <ModalBody tabIndex="0" aria-label="Venue Details">
               <div tabIndex="0">Categories:</div>
               {this.state.modalDetail.venue.categories.length && (
-                <Panel tabIndex="0">{this.state.modalDetail.venue.categories.map(category => category.name)}
-                </Panel>
+                <div>
+                  <Panel tabIndex="0">
+                    {this.state.modalDetail.venue.categories.map(category => category.name)}
+                  </Panel>
+                  <br />
+                </div>
               )}
+              <br />
               <Label bsStyle="default" className="modal-label-left" tabIndex="0">Location: {this.state.modalDetail.venue.location.country}</Label>
               <Label bsStyle="info" className="modal-label-right" tabIndex="0">Timezone: {this.state.modalDetail.venue.timeZone}</Label>
             </ModalBody>
