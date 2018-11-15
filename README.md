@@ -13,7 +13,7 @@ Features of the app:
 - Ease of use.
 - Accessible
 - Dynamic filtering.
-- Offline support(subject to CRA-PWA specifications learn more in: [Documentation](http://bit.ly/CRA-PWA) and runs only on development/ on https)
+- Offline support(subject to CRA-PWA specifications learn more in: [Documentation](http://bit.ly/CRA-PWA) and runs only on build/ on https)
 
 ## Technologies used
 - HTML5
