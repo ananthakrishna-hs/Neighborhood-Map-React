@@ -62,7 +62,7 @@ Two of its APIs are used in this web-app:
 
 Both APIs require authentication through their [developer platform](https://developer.foursquare.com/).
 
-##About escape-string-regexp and sort-by
+## About escape-string-regexp and sort-by
 
 These libraries are combined with JavaScript methods in order to facilitate matching and sorting.
 
