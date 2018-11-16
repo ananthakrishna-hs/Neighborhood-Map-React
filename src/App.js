@@ -26,7 +26,8 @@ class App extends Component {
 
   //Re-usable function to get nearby venues at start as well as at center change
   fetchFunc = (center) => {
-    fetch(`https://api.foursquare.com/v2/venues/search?ll=${center.lat},${center.lng}&client_id=LHKFCLEU3JQ4UVBH4OQZC4GBIKGBB4ADLP4C4W0TWEO4XUL2&client_secret=RK4Q5OSBB3BXPOYY2Z2BEBKV3VNA1D5BZRYXV1YPNRPSZ0MU&v=20181115`)
+    let client_id = '<CLIENT_ID>', client_secret = '<CLIENT_SECRET>', v = '<YYYYMMDD>';
+    fetch(`https://api.foursquare.com/v2/venues/search?ll=${center.lat},${center.lng}&client_id=${client_id}&client_secret=${client_secret}&v=${v}`)
     .then(res => res.json()).then(function(response) {
       if(response.meta.code === 200)
         this.setState({venues: response.response.venues.slice(0, 10)});
@@ -58,7 +59,8 @@ class App extends Component {
         modalShown: false,
       });
     else {
-      fetch(`https://api.foursquare.com/v2/venues/${venueId}?client_id=LHKFCLEU3JQ4UVBH4OQZC4GBIKGBB4ADLP4C4W0TWEO4XUL2&client_secret=RK4Q5OSBB3BXPOYY2Z2BEBKV3VNA1D5BZRYXV1YPNRPSZ0MU&v=20181115`)
+      let client_id = '<CLIENT_ID>', client_secret = '<CLIENT_SECRET>', v = '<YYYYMMDD>';
+      fetch(`https://api.foursquare.com/v2/venues/${venueId}?client_id=${client_id}&client_secret=${client_secret}&v=${v}`)
       .then(res => res.json()).then(function(response) {
         if(response.meta.code === 200)
           this.setState({
@@ -242,7 +244,7 @@ class App extends Component {
                   <Col sm={8} className="map-container" tabIndex="0" aria-label="Map application">
                     <MyMapComponent
                     markers_loc={queriedVenues}
-                    googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDT23otK1Zca1ko0AT1Yu1ntojCMHTVzfY"
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=<YOUR_GOOGLE_MAPS_API_KEY>"
                     loadingElement={<div style={{ height: `100%` }} />}
                     containerElement={<div style={{ height: `400px` }} />}
                     mapElement={<div style={{ height: `100%` }} />}
