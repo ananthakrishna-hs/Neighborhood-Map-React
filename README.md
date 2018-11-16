@@ -25,7 +25,7 @@ Features of the app:
     - react-bootstrap
     - escape-string-regexp
     - sort-by
--
+
 ## Setup
 
 ### Requirements
