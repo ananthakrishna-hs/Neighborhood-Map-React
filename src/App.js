@@ -26,7 +26,7 @@ class App extends Component {
 
   //Re-usable function to get nearby venues at start as well as at center change
   fetchFunc = (center) => {
-    let client_id = '<CLIENT_ID>', client_secret = '<CLIENT_SECRET>', v = '<YYYYMMDD>';
+    let client_id = 'LHKFCLEU3JQ4UVBH4OQZC4GBIKGBB4ADLP4C4W0TWEO4XUL2', client_secret = 'RK4Q5OSBB3BXPOYY2Z2BEBKV3VNA1D5BZRYXV1YPNRPSZ0MU', v = '20190815';
     fetch(`https://api.foursquare.com/v2/venues/search?ll=${center.lat},${center.lng}&client_id=${client_id}&client_secret=${client_secret}&v=${v}`)
     .then(res => res.json()).then(function(response) {
       if(response.meta.code === 200)
@@ -59,7 +59,7 @@ class App extends Component {
         modalShown: false,
       });
     else {
-      let client_id = '<CLIENT_ID>', client_secret = '<CLIENT_SECRET>', v = '<YYYYMMDD>';
+      let client_id = 'LHKFCLEU3JQ4UVBH4OQZC4GBIKGBB4ADLP4C4W0TWEO4XUL2', client_secret = 'RK4Q5OSBB3BXPOYY2Z2BEBKV3VNA1D5BZRYXV1YPNRPSZ0MU', v = '20190815';
       fetch(`https://api.foursquare.com/v2/venues/${venueId}?client_id=${client_id}&client_secret=${client_secret}&v=${v}`)
       .then(res => res.json()).then(function(response) {
         if(response.meta.code === 200)
@@ -219,7 +219,7 @@ class App extends Component {
                         <Navbar.Toggle />
                       </Navbar.Header>
                       <Navbar.Collapse>
-                        <label htmlFor="search">Filter Locations:</label>
+                        <label htmlFor="search">Filter Locations:</label><br/>
                         <input type="text" id="search" className="filter-text" onChange={e => this.querying(e.target.value)} />
                         <ul className="list-items">
                           {
@@ -244,7 +244,7 @@ class App extends Component {
                   <Col sm={8} className="map-container" tabIndex="0" aria-label="Map application">
                     <MyMapComponent
                     markers_loc={queriedVenues}
-                    googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=<YOUR_GOOGLE_MAPS_API_KEY>"
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDT23otK1Zca1ko0AT1Yu1ntojCMHTVzfY"
                     loadingElement={<div style={{ height: `100%` }} />}
                     containerElement={<div style={{ height: `400px` }} />}
                     mapElement={<div style={{ height: `100%` }} />}
