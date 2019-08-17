@@ -1,4 +1,4 @@
-# Neighborhood Map React - Sameepa
+# Neighborhood Map React
 
 > Uses ReactJS library for users to get top nearby venues of a location.
 
@@ -36,9 +36,6 @@ Features of the app:
 ### Installation/Development
 - Download/clone the repository.
 - Download the node package manager as per requirements and run `npm install` in terminal.
-- Install the react-app using command `npm install create-react-app`
-- Install the dependencies:
-    - `npm install --save <libraries>`
 - Get API authentications as indicated in the following sections and
     - For FOURSQUARE API, replace `<CLIENT_ID>`, `<CLIENT_SECRET>` and `<YYYYMMDD>` with your obtained Client_ID, Client_Secret and date versions' date in the format YYYYMMDD. Note that date indicates version of API up-to-date with that date, so donot put future date.
     - For Google Maps API replace `<YOUR_GOOGLE_MAPS_API_KEY>` in MyMapComponent googleMapURL prop with obtained API key.
